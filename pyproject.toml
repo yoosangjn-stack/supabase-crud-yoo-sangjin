@@ -1,0 +1,6 @@
+[project]
+name = "ch2-supabase-crud"
+version = "0.1.0"
+description = "회원·상품·주문 데이터베이스 CRUD 실습"
+requires-python = ">=3.11"
+dependencies = ["supabase>=2.0,<3.0", "python-dotenv>=1.0,<2.0"]
