@@ -1,26 +1,32 @@
-"""빈 실습 프로젝트에서만 실행. 이 프로그램은 실제 DB 쓰기를 수행합니다."""
+"""전용 실습 프로젝트의 승인된 가상 계정으로만 실행합니다."""
 import argparse
 import os
+from getpass import getpass
 from uuid import uuid4
 from crud import CrudService
 
-
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--run-demo", action="store_true", help="실습 DB의 쓰기/삭제를 명시적으로 허용")
+    parser.add_argument("--run-demo", action="store_true")
     args = parser.parse_args()
     if not args.run_demo:
-        parser.exit(message="DB 변경 없음. 전용 실습 프로젝트 준비 후 --run-demo를 사용하세요.\n")
+        parser.exit(message="DB 변경 없음. 실제 실습은 --run-demo로 실행하세요.\n")
     from dotenv import load_dotenv
     from supabase import create_client
     load_dotenv()
-    url, key = os.getenv("SUPABASE_URL"), os.getenv("SUPABASE_KEY")
+    url = os.getenv("SUPABASE_URL")
+    key = os.getenv("SUPABASE_PUBLISHABLE_KEY")
     if not url or not key:
-        raise SystemExit(".env에 전용 실습 프로젝트의 URL과 서버 키를 설정하세요.")
+        raise SystemExit("전용 프로젝트 URL과 공개용 키를 설정하세요.")
     client = create_client(url, key)
+    email = os.getenv("SUPABASE_TEST_EMAIL") or input("승인된 실습 계정 이메일: ")
+    password = getpass("실습 계정 암호: ")
+    client.auth.sign_in_with_password({"email": email, "password": password})
+    password = None
+    if not client.auth.get_user().user:
+        raise SystemExit("로그인 실패: 중단합니다.")
     members, products, orders = [CrudService(client, name) for name in ("members", "products", "orders")]
     tag = uuid4().hex[:12]
-    # 기존 데이터가 아니라 이 실행에서 만든 레코드만 수정·삭제한다.
     member = members.create({"name": "실습회원", "email": f"demo-{tag}@example.com"})[0]
     print("CREATE member:", member)
     product = products.create({"name": f"실습상품-{tag}", "price": 5000, "stock": 10})[0]
@@ -41,7 +47,6 @@ def main():
         assert service.read(row["id"]) == []
         print("DELETE verified", service.table, row["id"])
     print("세 테이블 CRUD 검증 완료")
-
 
 if __name__ == "__main__":
     main()
