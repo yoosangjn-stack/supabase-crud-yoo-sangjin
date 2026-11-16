@@ -49,4 +49,4 @@ SSH_EXIT_CODE=0
 전용 실습 프로젝트에서 스키마 COMMIT 및 검증 SQL ROLLBACK 성공. CREATE, READ JOIN, UPDATE, UNIQUE, CHECK, FK, RESTRICT, DELETE 8항목 PASS. 소유자 정책 3개 조회는 사용자가 직접 확인했다. 이번 SDK 검증에서 SQL을 재적용하지 않았다.
 
 ## 남은 증빙과 검증 범위
-실제 SQL 결과 및 PK/FK 대시보드 캡처 파일은 아직 첨부되지 않았다. [SDK 실제 실행 화면](screenshots/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7.png)은 사용자가 직접 업로드했다. 해당 추가 실행도 CRUD 및 정리 PASS이며, 화면의 정리 대상은 회원 5·상품 4·주문 4이다. 위 텍스트는 앞선 실행 기록으로 ID가 다른 것은 정상이다. 두 사용자 간 접근 차단·익명 접근 거부를 이번 실행에서 별도로 시험한 것은 아니다. SDK 성공을 전체 RLS 공격 테스트 완료로 해석하지 않는다.
+[PK/FK 실제 조회 캡처](screenshots/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%201.png)를 첨부했다. 세 테이블 PK와 주문의 회원·상품 FK가 보이지만 일부 긴 definition 오른쪽은 잘려 있다. SQL CRUD·제약조건 PASS 결과 화면은 아직 첨부되지 않았다. [SDK 실제 실행 화면](screenshots/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7.png)은 사용자가 직접 업로드했다. 해당 추가 실행도 CRUD 및 정리 PASS이며, 화면의 정리 대상은 회원 5·상품 4·주문 4이다. 위 텍스트는 앞선 실행 기록으로 ID가 다른 것은 정상이다. 두 사용자 간 접근 차단·익명 접근 거부를 이번 실행에서 별도로 시험한 것은 아니다. SDK 성공을 전체 RLS 공격 테스트 완료로 해석하지 않는다.
