@@ -7,7 +7,7 @@
 
 이 과제는 Supabase의 PostgreSQL 데이터베이스에서 회원·상품·주문의 생성(Create), 조회(Read), 수정(Update), 삭제(Delete)를 Python SDK와 SQL로 연습한다. 기존 `buyandsell`의 주문·상품 `table → insert/select/update/delete → execute` 흐름을 세 테이블에 적용했다. 상품 재고 자동 차감, 결제, 회원가입 UI, 웹 화면은 범위에 포함하지 않는다. SDK 실습에서는 승인된 가상 계정으로 로그인한다.
 
-**검증 상태:** Python 단위테스트 8개 통과. 전용 Supabase에서 스키마 생성 및 SQL 실증 검증 8개 항목 모두 통과했다. Python SDK로 실제 서버의 세 테이블 CRUD와 생성 데이터 정리를 검증했다. 한글 데이터 왕복도 통과했다. SDK 실제 실행 캡처를 첨부했다. SQL 결과 및 PK/FK 화면 캡처는 아직 남아 있다. [검증 기록](docs/VERIFICATION.md)을 참고한다.
+**검증 상태:** Python 단위테스트 8개 통과. 전용 Supabase에서 스키마 생성 및 SQL 실증 검증 8개 항목 모두 통과했다. Python SDK로 실제 서버의 세 테이블 CRUD와 생성 데이터 정리를 검증했다. 한글 데이터 왕복도 통과했다. SDK 실제 실행 캡처를 첨부했다. PK/FK 조회 결과 캡처도 첨부했다. SQL CRUD·제약조건 PASS 결과 화면은 아직 남아 있다. [검증 기록](docs/VERIFICATION.md)을 참고한다.
 
 ## 02 테이블과 관계
 기존 테이블과 충돌하지 않도록 `ch2_` 접두사를 사용한다. 반드시 별도의 비어 있는 실습 프로젝트에서 실행한다.
@@ -87,13 +87,13 @@ python -m unittest discover -s tests -v
 ```
 단위테스트는 실제 Supabase 서버·제약조건·권한을 검증하지 않는다. 실서버 SDK 실행 결과는 [검증 기록](docs/VERIFICATION.md)에 별도로 기록했다. 아래에서 완료된 검증과 아직 없는 화면 캡처를 구분한다.
 
-- [ ] Supabase에서 세 테이블 및 PK/FK 관계 확인 화면
+- [x] 세 테이블 PK/FK 조회 결과 화면(일부 긴 정의 오른쪽 잘림)
 - [x] Python SDK 회원·상품·주문 각각 생성·조회·수정·삭제 실제 결과 및 생성 데이터 정리
 - [x] SQL 회원·상품·주문 CRUD 및 ROLLBACK 실행 확인
 - [x] 잘못된 외래키, 0인 수량, 중복 이메일 입력이 거절되는 실제 결과
 - [ ] `.env`, 키, 개인 정보가 없는지 화면·Git 변경분 확인
 - [x] SDK 실제 캡처를 `docs/screenshots/`에 저장하고 상대경로로 연결
-- [ ] SQL 및 PK/FK 실제 캡처 추가
+- [ ] SQL CRUD·제약조건 PASS 결과 화면 추가
 - [ ] 본인 공개 GitHub 링크와 LMS 과제 항목을 대조 후 제출
 
 SQL 실제 검증 결과: CREATE, READ JOIN, UPDATE, UNIQUE, CHECK, FK, RESTRICT, DELETE 모두 PASS. Supabase SQL Editor 결과 화면에서 확인했다. 저장된 캡처 파일은 아직 없다. 설계도·목업은 실제 실행 증빙이 아니다.
@@ -115,3 +115,8 @@ SQL 실제 검증 결과: CREATE, READ JOIN, UPDATE, UNIQUE, CHECK, FK, RESTRICT
 사용자가 직접 업로드한 실제 실행 화면이다. CREATE·READ·UPDATE·DELETE와 생성 데이터 정리 PASS를 확인할 수 있다. SQL/PK·FK 화면을 대신하지 않는다.
 
 ![SDK 실제 CRUD 및 정리 결과](docs/screenshots/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7.png)
+
+## PK/FK 실제 조회 캡처
+사용자가 직접 실행·업로드한 제약조건 조회 결과다. 세 테이블의 기본키와 주문의 회원·상품 외래키를 확인할 수 있다. 일부 긴 definition 오른쪽이 잘려 있어 전체 관계 정의의 완전한 화면 증빙은 아니다. SQL CRUD·제약조건 PASS 결과 화면과 구분한다.
+
+![세 테이블 PK FK 조회 결과](docs/screenshots/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%201.png)
